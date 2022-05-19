@@ -1,73 +1,40 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+# The EarnKeeper Discord Bot
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This repository allows the EarnKeeper back end to communicate with its Discord channel members
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Deploying
 
-## Description
+The repository is already set up for deploy to kubernetes.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+From a fresh install, add a new file to the root of the project:
 
-## Installation
-
-```bash
-$ npm install
+```
+clear-values.yaml
 ```
 
-## Running the app
+(Copy clear-values.yaml.example to get a head start)
 
-```bash
-# development
-$ npm run start
+Configure this file with your secret settings.
 
-# watch mode
-$ npm run start:dev
+Run the following to generate a secret key and encrypt your settings.
 
-# production mode
-$ npm run start:prod
+```
+werf helm secret generate-secret-key | tr -d '\n' >  .werf_secret_key
+werf helm secret values encrypt clear-values.yaml -o .helm/secret-values.yaml
 ```
 
-## Test
+Set the following two secrets on your github repo:
 
-```bash
-# unit tests
-$ npm run test
+| Secret Name             | Description                                                           |
+| ----------------------- | --------------------------------------------------------------------- | ------------------------------ |
+| WERF_SECRET_KEY         | The contents of .werf_secret_key in the root of your project          |
+| KUBE_CONFIG_BASE64_DATA | The output of `doctl kubernetes cluster kubeconfig show <config name> | base64` if using digital ocean |
 
-# e2e tests
-$ npm run test:e2e
+If you have the Github and Digital Ocean CLIs installed you can do this as follows:
 
-# test coverage
-$ npm run test:cov
+```
+gh secret set WERF_SECRET_KEY --repos=\"$(git remote get-url origin)\" < .werf_secret_key
+gh secret set KUBE_CONFIG_BASE64_DATA --repos=\"$(git remote get-url origin)\" -b$(doctl kubernetes cluster kubeconfig show ekp | base64)
 ```
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+Commit your changes and push to `main` branch. The github action in this repo will perform the deploy with werf.

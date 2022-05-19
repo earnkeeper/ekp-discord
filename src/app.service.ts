@@ -13,8 +13,6 @@ export class AppService {
   }
 
   async postMessageToChannel(channelId: string, message: any) {
-    // For testing: 968809918096347236
-
     const channel = (await this.client.channels.fetch(
       channelId,
     )) as TextChannel;
@@ -23,8 +21,6 @@ export class AppService {
   }
 
   async postMessageToUser(userId: string, message: any) {
-    // For testing: 407876084156071937
-
     const user = await this.client.users.fetch(userId);
 
     if (!!message.embeds && !Array.isArray(message.embeds)) {
