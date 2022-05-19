@@ -1,5 +1,5 @@
 configVersion: 1
-project: metabomb-marketplace
+project: discord
 ---
 image: app
 dockerfile: Dockerfile

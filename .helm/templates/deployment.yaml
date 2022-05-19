@@ -21,7 +21,7 @@ spec:
           workingDir: /app
           env:
             - name: DISCORD_TOKEN
-              value: '{{ Values.discord.token }}'
+              value: '{{ .Values.discord.token }}'
           ports:
             - containerPort: 3001
               protocol: TCP
