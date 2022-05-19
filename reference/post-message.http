@@ -1,0 +1,6 @@
+POST http://localhost:3001/message/user/407876084156071937
+Content-Type: application/json
+
+{
+   "_message": "Some message"
+}

@@ -1,0 +1,25 @@
+{
+  "type": "rich",
+  "title": "New Pega Listing",
+  "description": "https://play.pegaxy.io/marketplace/listing/456878",
+  "url": "https://play.pegaxy.io/marketplace/listing/456878",
+  "color": 16215296,
+  "timestamp": null,
+  "fields": [
+    { "name": "Price", "value": "$ 100", "inline": true },
+    { "name": "Bloodline", "value": "Hoz", "inline": true },
+    { "name": "Breed Type", "value": "Pacer", "inline": true },
+    { "name": "Breeds", "value": "2 / 7", "inline": true },
+    { "name": "Last Breed", "value": "a month ago", "inline": true }
+  ],
+  "thumbnail": null,
+  "image": { "url": "https://cdn.pegaxy.io/data/pega/1648211395750" },
+  "video": null,
+  "author": {
+    "name": "EarnKeeper",
+    "url": "https://earnkeeper.io",
+    "iconURL": "https://cdn-images-1.medium.com/fit/c/32/32/0*Acb02ae0MT7-A6_5"
+  },
+  "provider": null,
+  "footer": null
+}
