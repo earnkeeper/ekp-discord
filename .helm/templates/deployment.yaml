@@ -23,7 +23,7 @@ spec:
             - name: DISCORD_TOKEN
               value: '{{ .Values.discord.token }}'
             - name: PORT
-              value: 80
+              value: "80"
           ports:
             - containerPort: 80
               protocol: TCP
