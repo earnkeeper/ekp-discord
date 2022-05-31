@@ -22,6 +22,8 @@ spec:
           env:
             - name: DISCORD_TOKEN
               value: '{{ .Values.discord.token }}'
+            - name: PORT
+              value: 80
           ports:
-            - containerPort: 3001
+            - containerPort: 80
               protocol: TCP
